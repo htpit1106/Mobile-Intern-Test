@@ -10,7 +10,7 @@ interface ApiSearch {
         @Query("key") apiKey:String,
         @Query("q") query: String,
         @Query("format") format: String = "json",
-        @Query("limit") limit: Int = 10
+        @Query("limit") limit: Int = 50
     ):List<Place>
 
 }
