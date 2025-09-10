@@ -1,5 +1,11 @@
 package com.example.mobileinterntest.Adapter
 
+import android.graphics.Color
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +17,15 @@ import com.example.mobileinterntest.data.model.Place
 
 class ResultAdapter : RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
 
+    private var currentQuery: String  = "";
 
     // List place
     private var places: List<Place> = emptyList()
-    fun setPlaces(places: List<Place>) {
-        this.places = places
-        notifyDataSetChanged()
-    }
 
     // update data
     fun updateData(places: List<Place>, query: String) {
         this.places = places
+        this.currentQuery = query
         notifyDataSetChanged()
     }
 
@@ -53,6 +57,8 @@ class ResultAdapter : RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
             listener?.onRedirectClick(place)
         }
 
+        holder.txtNameLocation.text = holder.highlightQuery(place.displayName, currentQuery)
+
 
     }
 
@@ -60,9 +66,36 @@ class ResultAdapter : RecyclerView.Adapter<ResultAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
          val txtNameLocation = itemView.findViewById<TextView>(R.id.txtNameLocation)
          val imgRedirect = itemView.findViewById<ImageView>(R.id.imgRedirect)
-        fun bind(place: Place) {
+         fun bind(place: Place) {
             txtNameLocation.text = place.displayName
         }
+        fun highlightQuery(fullText: String, query: String) : CharSequence{
+           if(query.isEmpty()){
+               return fullText
+           }
+            val spannable = SpannableString(fullText)
+            val startIndex = fullText.lowercase().indexOf(query.lowercase())
+            if(startIndex >= 0){
+                val endIndex = startIndex + query.length
+                spannable.setSpan(
+
+                    StyleSpan(Typeface.BOLD),
+                    startIndex,
+                    endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                spannable.setSpan(
+                    ForegroundColorSpan(Color.BLUE),
+                    startIndex,
+                    endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+            }
+            return spannable
+
+        }
+
     }
 
 }
