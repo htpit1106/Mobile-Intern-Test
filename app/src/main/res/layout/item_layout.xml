@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Nguyen Van A"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:ellipsize="end"
             android:singleLine="true"
